@@ -3,7 +3,7 @@ from rest_framework import permissions
 
 class IsAdminUser(permissions.BasePermission):
     """
-    Allows access only to admin users.
+    Chỉ cho phép truy cập với người dùng admin.
     """
 
     def has_permission(self, request, view):
@@ -12,7 +12,7 @@ class IsAdminUser(permissions.BasePermission):
 
 class IsManagerUser(permissions.BasePermission):
     """
-    Allows access only to manager users.
+    Chỉ cho phép truy cập với người dùng quản lý (manager).
     """
 
     def has_permission(self, request, view):
@@ -21,7 +21,7 @@ class IsManagerUser(permissions.BasePermission):
 
 class IsInventoryStaff(permissions.BasePermission):
     """
-    Allows access only to inventory staff.
+    Chỉ cho phép truy cập với nhân viên kho.
     """
 
     def has_permission(self, request, view):
@@ -30,7 +30,7 @@ class IsInventoryStaff(permissions.BasePermission):
 
 class IsSalesStaff(permissions.BasePermission):
     """
-    Allows access only to sales staff.
+    Chỉ cho phép truy cập với nhân viên bán hàng.
     """
 
     def has_permission(self, request, view):
@@ -39,7 +39,7 @@ class IsSalesStaff(permissions.BasePermission):
 
 class IsAdminOrManager(permissions.BasePermission):
     """
-    Allows access only to admin or manager users.
+    Chỉ cho phép truy cập với admin hoặc quản lý.
     """
 
     def has_permission(self, request, view):
@@ -49,7 +49,7 @@ class IsAdminOrManager(permissions.BasePermission):
 
 class IsAdminOrManagerOrSalesStaff(permissions.BasePermission):
     """
-    Allows access only to admin, manager or sales staff users.
+    Chỉ cho phép truy cập với admin, quản lý hoặc nhân viên bán hàng.
     """
 
     def has_permission(self, request, view):
@@ -59,7 +59,7 @@ class IsAdminOrManagerOrSalesStaff(permissions.BasePermission):
 
 class IsAdminOrManagerOrInventoryStaff(permissions.BasePermission):
     """
-    Allows access only to admin, manager or inventory staff users.
+    Chỉ cho phép truy cập với admin, quản lý hoặc nhân viên kho.
     """
 
     def has_permission(self, request, view):
@@ -69,11 +69,11 @@ class IsAdminOrManagerOrInventoryStaff(permissions.BasePermission):
 
 class IsOwner(permissions.BasePermission):
     """
-    Allows access only to the owner of an object.
+    Chỉ cho phép truy cập với chủ sở hữu của đối tượng.
     """
 
     def has_object_permission(self, request, view, obj):
-        # Assuming the object has either a 'user' or 'customer' field as the owner
+        # Giả định đối tượng có trường 'user' hoặc 'customer' là chủ sở hữu
         if hasattr(obj, 'user'):
             return obj.user == request.user
         if hasattr(obj, 'customer'):
@@ -83,16 +83,16 @@ class IsOwner(permissions.BasePermission):
 
 class IsOwnerOrStaff(permissions.BasePermission):
     """
-    Allows access to the owner of an object or any staff member.
+    Cho phép chủ sở hữu hoặc bất kỳ nhân viên nào truy cập đối tượng.
     """
 
     def has_object_permission(self, request, view, obj):
-        # Staff members can access any object
+        # Nhân viên có thể truy cập bất kỳ đối tượng nào
         if request.user.is_admin() or request.user.is_manager() or \
                 request.user.is_sales_staff() or request.user.is_inventory_staff():
             return True
 
-        # Check if user is the owner
+        # Kiểm tra nếu user là chủ sở hữu
         if hasattr(obj, 'user'):
             return obj.user == request.user
         if hasattr(obj, 'customer'):
@@ -102,7 +102,7 @@ class IsOwnerOrStaff(permissions.BasePermission):
 
 class ReadOnly(permissions.BasePermission):
     """
-    Allows read-only access to any authenticated user.
+    Chỉ cho phép truy cập đọc (read-only) với người dùng đã xác thực.
     """
 
     def has_permission(self, request, view):
@@ -115,18 +115,18 @@ class ReadOnly(permissions.BasePermission):
 
 class IsBranchManager(permissions.BasePermission):
     """
-    Allows branch managers to access their own branch data
+    Chỉ cho phép quản lý chi nhánh truy cập dữ liệu chi nhánh của mình.
     """
 
     def has_permission(self, request, view):
         return bool(request.user and request.user.is_authenticated and request.user.is_manager())
 
     def has_object_permission(self, request, view, obj):
-        # Allow if user is the branch manager
+        # Cho phép nếu user là quản lý của chi nhánh
         if hasattr(obj, 'manager'):
             return obj.manager == request.user
 
-        # If object is related to a branch (like Stock), check that relationship
+        # Nếu đối tượng liên quan đến chi nhánh (ví dụ Stock), kiểm tra mối quan hệ đó
         if hasattr(obj, 'branch'):
             return obj.branch.manager == request.user
 
@@ -135,7 +135,7 @@ class IsBranchManager(permissions.BasePermission):
 
 class IsBranchStaff(permissions.BasePermission):
     """
-    Allows staff to access only their assigned branch data
+    Chỉ cho phép nhân viên truy cập dữ liệu của chi nhánh được phân công.
     """
 
     def has_permission(self, request, view):
@@ -147,7 +147,7 @@ class IsBranchStaff(permissions.BasePermission):
         )
 
     def has_object_permission(self, request, view, obj):
-        # Staff can access data for their branch
+        # Nhân viên chỉ được truy cập dữ liệu của chi nhánh mình
         if hasattr(obj, 'branch'):
             return obj.branch == request.user.branch
 
@@ -156,7 +156,7 @@ class IsBranchStaff(permissions.BasePermission):
 
 class IsSalesOrManager(permissions.BasePermission):
     """
-    Allows access only to sales staff or manager users.
+    Chỉ cho phép truy cập với nhân viên bán hàng hoặc quản lý.
     """
     def has_permission(self, request, view):
         return bool(request.user and request.user.is_authenticated and (
