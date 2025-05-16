@@ -400,3 +400,31 @@ class OrderAPITest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['status'], 'CANCELLED')
         self.assertIsNotNone(response.data['cancelled_at'])
+
+    def test_sales_can_approve_order(self):
+        """Test sales staff có thể duyệt đơn hàng"""
+        self.client.force_authenticate(user=self.staff)
+        url = reverse('orders:order-approve', kwargs={'pk': self.order.id})
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.order.refresh_from_db()
+        self.assertEqual(self.order.status, 'APPROVED')
+        self.assertEqual(self.order.approved_by, self.staff)
+        self.assertIsNotNone(self.order.approved_at)
+
+    def test_customer_cannot_approve_order(self):
+        """Test customer không thể duyệt đơn hàng"""
+        self.client.force_authenticate(user=self.customer)
+        url = reverse('orders:order-approve', kwargs={'pk': self.order.id})
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_approve_already_approved_order(self):
+        """Test duyệt đơn đã duyệt sẽ báo lỗi"""
+        self.order.status = 'APPROVED'
+        self.order.save()
+        self.client.force_authenticate(user=self.staff)
+        url = reverse('orders:order-approve', kwargs={'pk': self.order.id})
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('detail', response.data)

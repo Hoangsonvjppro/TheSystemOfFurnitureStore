@@ -152,3 +152,13 @@ class IsBranchStaff(permissions.BasePermission):
             return obj.branch == request.user.branch
 
         return False
+
+
+class IsSalesOrManager(permissions.BasePermission):
+    """
+    Allows access only to sales staff or manager users.
+    """
+    def has_permission(self, request, view):
+        return bool(request.user and request.user.is_authenticated and (
+            request.user.is_sales_staff() or request.user.is_manager()
+        ))

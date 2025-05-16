@@ -14,7 +14,7 @@ from .serializers import (
 )
 from apps.users.permissions import (
     IsAdminUser, IsManagerUser, IsSalesStaff, IsOwner, IsOwnerOrStaff,
-    IsAdminOrManagerOrSalesStaff
+    IsAdminOrManagerOrSalesStaff, IsSalesOrManager
 )
 
 
@@ -255,13 +255,11 @@ class OrderViewSet(viewsets.ModelViewSet):
         """
         Update order status
         """
-        # Only staff can update order status
         if not (request.user.is_admin() or request.user.is_manager() or request.user.is_sales_staff()):
             return Response(
-                {'error': _('You do not have permission to perform this action')},
+                {'success': False, 'message': _('You do not have permission to perform this action')},
                 status=status.HTTP_403_FORBIDDEN
             )
-
         order = self.get_object()
         serializer = OrderStatusUpdateSerializer(
             order,
@@ -270,23 +268,19 @@ class OrderViewSet(viewsets.ModelViewSet):
         )
         serializer.is_valid(raise_exception=True)
         updated_order = serializer.save()
-
-        # Return updated order
         order_serializer = OrderSerializer(updated_order)
-        return Response(order_serializer.data)
+        return Response({'success': True, 'message': _('Order status updated successfully'), 'order': order_serializer.data})
 
     @action(detail=True, methods=['post'])
     def update_payment(self, request, pk=None):
         """
         Update payment status and method
         """
-        # Only staff can update payment
         if not (request.user.is_admin() or request.user.is_manager() or request.user.is_sales_staff()):
             return Response(
-                {'error': _('You do not have permission to perform this action')},
+                {'success': False, 'message': _('You do not have permission to perform this action')},
                 status=status.HTTP_403_FORBIDDEN
             )
-
         order = self.get_object()
         serializer = OrderPaymentUpdateSerializer(
             order,
@@ -295,10 +289,8 @@ class OrderViewSet(viewsets.ModelViewSet):
         )
         serializer.is_valid(raise_exception=True)
         updated_order = serializer.save()
-
-        # Return updated order
         order_serializer = OrderSerializer(updated_order)
-        return Response(order_serializer.data)
+        return Response({'success': True, 'message': _('Order payment updated successfully'), 'order': order_serializer.data})
 
     @action(detail=True, methods=['post'])
     def cancel(self, request, pk=None):
@@ -306,41 +298,29 @@ class OrderViewSet(viewsets.ModelViewSet):
         Cancel an order
         """
         order = self.get_object()
-
-        # Validate user has permission
         if not (request.user.is_admin() or request.user.is_manager() or
                 request.user.is_sales_staff() or request.user == order.user):
             return Response(
-                {'error': _('You do not have permission to perform this action')},
+                {'success': False, 'message': _('You do not have permission to perform this action')},
                 status=status.HTTP_403_FORBIDDEN
             )
-
-        # Check if order can be cancelled
         if order.status not in ['PENDING', 'CONFIRMED', 'PROCESSING']:
             return Response(
-                {'error': _('This order cannot be cancelled')},
+                {'success': False, 'message': _('This order cannot be cancelled')},
                 status=status.HTTP_400_BAD_REQUEST
             )
-
-        # Get notes
         notes = request.data.get('notes', _('Order cancelled by user'))
-
-        # Update order status
         order.status = 'CANCELLED'
         order.cancelled_at = timezone.now()
         order.save()
-
-        # Create tracking record
         OrderTracking.objects.create(
             order=order,
             status='CANCELLED',
             notes=notes,
             performed_by=request.user
         )
-
-        # Return updated order
         serializer = OrderSerializer(order)
-        return Response(serializer.data)
+        return Response({'success': True, 'message': _('Order cancelled successfully'), 'order': serializer.data})
 
     @action(detail=False, methods=['get'])
     def my_orders(self, request):
@@ -396,6 +376,21 @@ class OrderViewSet(viewsets.ModelViewSet):
         }
 
         return Response(stats)
+
+    @action(detail=True, methods=['post'], permission_classes=[IsSalesOrManager])
+    def approve(self, request, pk=None):
+        """
+        Approve (duyệt) một đơn hàng. Chỉ Sales hoặc Manager mới được duyệt.
+        """
+        order = self.get_object()
+        if order.status == 'APPROVED':
+            return Response({'success': False, 'message': _('Order is already approved.')}, status=status.HTTP_400_BAD_REQUEST)
+        order.status = 'APPROVED'
+        order.approved_by = request.user
+        order.approved_at = timezone.now()
+        order.save()
+        serializer = self.get_serializer(order)
+        return Response({'success': True, 'message': _('Order approved successfully'), 'order': serializer.data})
 
 
 class OrderTrackingViewSet(viewsets.ReadOnlyModelViewSet):
