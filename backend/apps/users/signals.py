@@ -1,29 +1,31 @@
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
+from django.conf import settings
 
 from .models import User
 
 
 @receiver(post_save, sender=User)
-def create_user_related_models(sender, instance, created, **kwargs):
+def create_user_cart(sender, instance, created, **kwargs):
     """
-    Create related models for a new user (e.g., cart, wishlist)
+    Create a cart when a user is registered
     """
     if created:
-        # Import here to avoid circular imports
+        # Import here to avoid circular import
         from apps.orders.models import Cart
+        Cart.objects.create(user=instance)
 
-        # Create a cart for the user
-        Cart.objects.create(customer=instance)
 
-        # Create a wishlist for the user (if Wishlist model is implemented)
-        try:
-            from apps.products.models import Wishlist
-            Wishlist.objects.create(user=instance)
-        except ImportError:
-            # Wishlist model might not be implemented yet
-            pass
+@receiver(post_save, sender=User)
+def create_user_wishlist(sender, instance, created, **kwargs):
+    """
+    Create a wishlist when a user is registered
+    """
+    if created:
+        # Import here to avoid circular import
+        from apps.products.models import Wishlist
+        Wishlist.objects.create(user=instance)
 
 
 @receiver(pre_save, sender=User)

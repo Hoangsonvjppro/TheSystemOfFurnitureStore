@@ -2,10 +2,11 @@ from django.apps import AppConfig
 from django.utils.translation import gettext_lazy as _
 
 
-class UsersConfig(AppConfig):
+class InventoryConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'apps.users'
-    verbose_name = _('Users & Authentication')
+    name = 'apps.inventory'
+    verbose_name = _('Inventory & Branches')
 
     def ready(self):
-        import apps.users.signals
+        # Import any signals here
+        pass

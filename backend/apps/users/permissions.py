@@ -1,7 +1,7 @@
 from rest_framework import permissions
 
 
-class IsAdmin(permissions.BasePermission):
+class IsAdminUser(permissions.BasePermission):
     """
     Allows access only to admin users.
     """
@@ -10,7 +10,7 @@ class IsAdmin(permissions.BasePermission):
         return bool(request.user and request.user.is_authenticated and request.user.is_admin())
 
 
-class IsManager(permissions.BasePermission):
+class IsManagerUser(permissions.BasePermission):
     """
     Allows access only to manager users.
     """
@@ -111,3 +111,44 @@ class ReadOnly(permissions.BasePermission):
             request.user and
             request.user.is_authenticated
         )
+
+
+class IsBranchManager(permissions.BasePermission):
+    """
+    Allows branch managers to access their own branch data
+    """
+
+    def has_permission(self, request, view):
+        return bool(request.user and request.user.is_authenticated and request.user.is_manager())
+
+    def has_object_permission(self, request, view, obj):
+        # Allow if user is the branch manager
+        if hasattr(obj, 'manager'):
+            return obj.manager == request.user
+
+        # If object is related to a branch (like Stock), check that relationship
+        if hasattr(obj, 'branch'):
+            return obj.branch.manager == request.user
+
+        return False
+
+
+class IsBranchStaff(permissions.BasePermission):
+    """
+    Allows staff to access only their assigned branch data
+    """
+
+    def has_permission(self, request, view):
+        return bool(
+            request.user and
+            request.user.is_authenticated and
+            request.user.branch is not None and
+            (request.user.is_inventory_staff() or request.user.is_sales_staff())
+        )
+
+    def has_object_permission(self, request, view, obj):
+        # Staff can access data for their branch
+        if hasattr(obj, 'branch'):
+            return obj.branch == request.user.branch
+
+        return False

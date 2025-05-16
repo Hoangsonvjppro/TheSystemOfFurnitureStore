@@ -1,15 +1,19 @@
 from rest_framework import viewsets, generics, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth import login, logout
 from django.utils.translation import gettext_lazy as _
 
 from .models import User, UserShippingAddress
 from .serializers import (
-    UserSerializer, UserCreateSerializer, UserPasswordChangeSerializer,
-    UserShippingAddressSerializer, StaffUserSerializer, CustomerProfileSerializer
+    UserSerializer, UserCreateSerializer, UserLoginSerializer,
+    UserPasswordChangeSerializer, UserShippingAddressSerializer,
+    StaffUserSerializer, CustomerProfileSerializer
 )
 from .permissions import (
-    IsAdmin, IsAdminOrManager, IsOwner, IsOwnerOrStaff
+    IsAdminUser, IsAdminOrManager, IsOwner, IsOwnerOrStaff
 )
 
 
@@ -134,3 +138,117 @@ class CustomerProfileView(generics.RetrieveAPIView):
     queryset = User.objects.filter(role='CUSTOMER', is_active=True)
     serializer_class = CustomerProfileSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+
+class UserRegisterView(generics.CreateAPIView):
+    """
+    Register a new user
+    """
+    serializer_class = UserCreateSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+
+        # Generate tokens
+        refresh = RefreshToken.for_user(user)
+
+        return Response({
+            'user': UserSerializer(user).data,
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+        }, status=status.HTTP_201_CREATED)
+
+
+class UserLoginView(APIView):
+    """
+    Login a user and return tokens
+    """
+    permission_classes = [permissions.AllowAny]
+    serializer_class = UserLoginSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+
+        # Login user in Django session
+        login(request, user)
+
+        # Generate tokens
+        refresh = RefreshToken.for_user(user)
+
+        return Response({
+            'user': UserSerializer(user).data,
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+        })
+
+
+class UserLogoutView(APIView):
+    """
+    Logout a user
+    """
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        # Clear Django session
+        logout(request)
+
+        return Response({'detail': _('Successfully logged out.')})
+
+
+class UserProfileView(generics.RetrieveUpdateAPIView):
+    """
+    Retrieve or update user profile
+    """
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+
+class PasswordChangeView(APIView):
+    """
+    Change user password
+    """
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = UserPasswordChangeSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+
+        user = request.user
+        user.set_password(serializer.validated_data['new_password'])
+        user.save()
+
+        return Response({'detail': _('Password changed successfully.')}, status=status.HTTP_200_OK)
+
+
+class UserShippingAddressListCreateView(generics.ListCreateAPIView):
+    """
+    List and create shipping addresses
+    """
+    serializer_class = UserShippingAddressSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return UserShippingAddress.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class UserShippingAddressDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieve, update, or delete a shipping address
+    """
+    serializer_class = UserShippingAddressSerializer
+    permission_classes = [permissions.IsAuthenticated, IsOwnerOrStaff]
+
+    def get_queryset(self):
+        return UserShippingAddress.objects.filter(user=self.request.user)
