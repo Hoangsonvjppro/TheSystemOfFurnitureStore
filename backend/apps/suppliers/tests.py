@@ -4,8 +4,12 @@ from django.contrib.auth import get_user_model
 from rest_framework.test import APITestCase, APIClient
 from rest_framework import status
 import json
+from decimal import Decimal
 
-from .models import Supplier, SupplierContact, PurchaseOrder
+from .models import Supplier, SupplierContact, PurchaseOrder, PurchaseOrderItem, PurchaseOrderReceive, PurchaseOrderReceiveItem
+from apps.products.models import Product
+from apps.inventory.models import Stock, StockMovement
+from django.db import models
 
 User = get_user_model()
 
@@ -167,3 +171,111 @@ class SupplierAPITest(APITestCase):
         self.supplier.refresh_from_db()
         self.assertEqual(self.supplier.name, 'Updated Supplier')
         self.assertEqual(self.supplier.email, 'updated@supplier.com')
+
+
+class PurchaseOrderReceiveTest(APITestCase):
+    def setUp(self):
+        # Create test user
+        self.user = User.objects.create_user(
+            username='testuser',
+            password='testpass123',
+            email='test@example.com'
+        )
+        self.client.force_authenticate(user=self.user)
+
+        # Create test supplier
+        self.supplier = Supplier.objects.create(
+            name='Test Supplier',
+            email='supplier@example.com',
+            phone='1234567890'
+        )
+
+        # Create test product
+        self.product = Product.objects.create(
+            name='Test Product',
+            slug='test-product',
+            description='Test description',
+            price=Decimal('100.00'),
+            sku='TP001'
+        )
+
+        # Create test branch
+        from apps.inventory.models import Branch
+        self.branch = Branch.objects.create(
+            name='Test Branch',
+            code='TB001'
+        )
+
+        # Create test purchase order
+        self.purchase_order = PurchaseOrder.objects.create(
+            supplier=self.supplier,
+            branch=self.branch,
+            status='APPROVED',
+            created_by=self.user
+        )
+
+        # Create test purchase order item
+        self.po_item = PurchaseOrderItem.objects.create(
+            purchase_order=self.purchase_order,
+            product=self.product,
+            quantity_ordered=10,
+            unit_price=Decimal('100.00'),
+            line_total=Decimal('1000.00')
+        )
+
+    def test_receive_items_and_update_stock(self):
+        """Test receiving items and updating stock"""
+        # Create receive record
+        receive = PurchaseOrderReceive.objects.create(
+            purchase_order=self.purchase_order,
+            received_by=self.user
+        )
+
+        # Receive 5 items
+        receive_item = PurchaseOrderReceiveItem.objects.create(
+            receive=receive,
+            po_item=self.po_item,
+            quantity=5
+        )
+
+        # Check PO item received quantity
+        self.po_item.refresh_from_db()
+        self.assertEqual(self.po_item.quantity_received, 5)
+
+        # Check stock quantity
+        stock = Stock.objects.get(branch=self.branch, product=self.product)
+        self.assertEqual(stock.quantity, 5)
+
+        # Check stock movement
+        movement = StockMovement.objects.get(
+            stock=stock,
+            reference=f"PO #{self.purchase_order.po_number}"
+        )
+        self.assertEqual(movement.quantity, 5)
+        self.assertEqual(movement.movement_type, 'ADDITION')
+
+        # Receive remaining 5 items
+        receive_item2 = PurchaseOrderReceiveItem.objects.create(
+            receive=receive,
+            po_item=self.po_item,
+            quantity=5
+        )
+
+        # Check PO item received quantity
+        self.po_item.refresh_from_db()
+        self.assertEqual(self.po_item.quantity_received, 10)
+
+        # Check stock quantity
+        stock.refresh_from_db()
+        self.assertEqual(stock.quantity, 10)
+
+        # Check total stock movements
+        movements = StockMovement.objects.filter(
+            stock=stock,
+            reference=f"PO #{self.purchase_order.po_number}"
+        )
+        self.assertEqual(movements.count(), 2)
+        self.assertEqual(
+            movements.aggregate(total=models.Sum('quantity'))['total'],
+            10
+        )

@@ -306,4 +306,24 @@ class PurchaseOrderReceiveItem(models.Model):
         po_item.quantity_received = total_received
         po_item.save(update_fields=['quantity_received'])
 
-        # This will trigger the PO status update in the PurchaseOrderItem save method
+        # Update stock quantity
+        from apps.inventory.models import Stock, StockMovement
+        stock, created = Stock.objects.get_or_create(
+            branch=self.receive.purchase_order.branch,
+            product=po_item.product,
+            defaults={'quantity': 0}
+        )
+
+        # Create stock movement record
+        StockMovement.objects.create(
+            stock=stock,
+            quantity=self.quantity,
+            movement_type='ADDITION',
+            reference=f"PO #{self.receive.purchase_order.po_number}",
+            notes=f"Received from purchase order {self.receive.purchase_order.po_number}",
+            performed_by=self.receive.received_by
+        )
+
+        # Update stock quantity
+        stock.quantity += self.quantity
+        stock.save(update_fields=['quantity'])

@@ -248,3 +248,66 @@ class StockAPITest(APITestCase):
         self.assertEqual(movement.movement_type, 'ADDITION')
         self.assertEqual(movement.quantity, 5)  # 25 - 20 = 5
         self.assertEqual(movement.notes, 'API Test adjustment')
+
+    def test_inventory_report(self):
+        """Test inventory report generation"""
+        # Create some test data
+        self.stock.quantity = 0  # Out of stock
+        self.stock.save()
+
+        another_product = Product.objects.create(
+            name='Another Product',
+            slug='another-product',
+            description='Another test description',
+            price=150.00,
+            sku='ATP002'
+        )
+
+        low_stock = Stock.objects.create(
+            branch=self.branch,
+            product=another_product,
+            quantity=3,
+            reorder_level=5
+        )
+
+        # Create some movements
+        StockMovement.objects.create(
+            stock=self.stock,
+            quantity=5,
+            movement_type='ADDITION',
+            performed_by=self.inventory_staff
+        )
+
+        StockMovement.objects.create(
+            stock=low_stock,
+            quantity=2,
+            movement_type='REMOVAL',
+            performed_by=self.inventory_staff
+        )
+
+        # Test report
+        report_url = reverse('inventory:stock-inventory-report')
+        response = self.client.get(report_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.data
+
+        # Check statistics
+        self.assertEqual(data['statistics']['total_products'], 2)
+        self.assertEqual(data['statistics']['out_of_stock'], 1)
+        self.assertEqual(data['statistics']['low_stock'], 1)
+
+        # Check low stock items
+        self.assertEqual(len(data['low_stock_items']), 1)
+        self.assertEqual(data['low_stock_items'][0]['product'], another_product.id)
+
+        # Check out of stock items
+        self.assertEqual(len(data['out_of_stock_items']), 1)
+        self.assertEqual(data['out_of_stock_items'][0]['product'], self.product.id)
+
+        # Check movement statistics
+        movement_stats = {m['movement_type']: m for m in data['movement_statistics']}
+        self.assertEqual(movement_stats['ADDITION']['count'], 1)
+        self.assertEqual(movement_stats['REMOVAL']['count'], 1)
+        self.assertEqual(movement_stats['ADDITION']['total_quantity'], 5)
+        self.assertEqual(movement_stats['REMOVAL']['total_quantity'], 2)

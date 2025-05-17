@@ -279,6 +279,68 @@ class StockViewSet(viewsets.ModelViewSet):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    @action(detail=False, methods=['get'])
+    def inventory_report(self, request):
+        """
+        Generate inventory report with:
+        - Total products
+        - Low stock items
+        - Out of stock items
+        - Recent movements
+        """
+        # Get user's accessible branches
+        user = request.user
+        if user.is_admin():
+            branches = Branch.objects.all()
+        elif user.is_manager() and hasattr(user, 'managed_branch'):
+            branches = [user.managed_branch]
+        elif user.branch:
+            branches = [user.branch]
+        else:
+            branches = []
+
+        # Get date range from query params
+        start_date = request.query_params.get('start_date')
+        end_date = request.query_params.get('end_date')
+
+        # Base queryset
+        stocks = Stock.objects.filter(branch__in=branches)
+
+        # Calculate statistics
+        stats = stocks.aggregate(
+            total_products=Count('id'),
+            total_quantity=Sum('quantity'),
+            low_stock=Count('id', filter=F('quantity') <= F('reorder_level')),
+            out_of_stock=Count('id', filter=F('quantity') <= 0)
+        )
+
+        # Get low stock items
+        low_stock_items = stocks.filter(quantity__lte=F('reorder_level'))
+        low_stock_serializer = StockSerializer(low_stock_items, many=True)
+
+        # Get out of stock items
+        out_of_stock_items = stocks.filter(quantity=0)
+        out_of_stock_serializer = StockSerializer(out_of_stock_items, many=True)
+
+        # Get recent movements
+        movements = StockMovement.objects.filter(stock__branch__in=branches)
+        if start_date:
+            movements = movements.filter(created_at__gte=start_date)
+        if end_date:
+            movements = movements.filter(created_at__lte=end_date)
+
+        movement_stats = movements.values('movement_type').annotate(
+            count=Count('id'),
+            total_quantity=Sum('quantity')
+        )
+
+        return Response({
+            'statistics': stats,
+            'low_stock_items': low_stock_serializer.data,
+            'out_of_stock_items': out_of_stock_serializer.data,
+            'movement_statistics': movement_stats
+        })
+
 
 class StockMovementViewSet(viewsets.ModelViewSet):
     """
