@@ -1,0 +1,435 @@
+<!-- Product Detail Page -->
+<div class="product-detail-page bg-gray-50 py-8">
+    <div class="container mx-auto px-4">
+        <!-- Breadcrumb -->
+        <div class="mb-6">
+            <div class="flex items-center text-sm text-gray-500">
+                <a href="/" class="hover:text-primary-600">Trang chủ</a>
+                <span class="mx-2">/</span>
+                <a href="/product_list.html" class="hover:text-primary-600">Sản phẩm</a>
+                <span class="mx-2">/</span>
+                <a href="#" id="category-breadcrumb" class="hover:text-primary-600">Danh mục</a>
+                <span class="mx-2">/</span>
+                <span id="product-name-breadcrumb" class="text-gray-700">Tên sản phẩm</span>
+            </div>
+        </div>
+
+        <!-- Product Overview Container -->
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
+                <!-- Product Image Gallery -->
+                <div class="product-gallery p-4">
+                    <!-- Main Image -->
+                    <div class="main-image aspect-square bg-gray-100 rounded-lg mb-4 overflow-hidden relative">
+                        <img id="main-product-image" src="https://via.placeholder.com/600x600?text=Đang+tải+hình+ảnh" alt="Product Image" class="w-full h-full object-cover">
+                        <!-- Sale badge -->
+                        <div id="discount-badge" class="hidden absolute top-4 right-4 bg-accent-500 text-white font-bold px-2 py-1 rounded text-sm">
+                            -0%
+                        </div>
+                    </div>
+                    
+                    <!-- Thumbnail Gallery -->
+                    <div class="thumbnails grid grid-cols-5 gap-2" id="image-thumbnails">
+                        <div class="aspect-square bg-gray-100 rounded border border-primary-500 cursor-pointer overflow-hidden">
+                            <img src="https://via.placeholder.com/150x150?text=Thumbnail+1" alt="Thumbnail 1" class="w-full h-full object-cover">
+                        </div>
+                        <div class="aspect-square bg-gray-100 rounded border border-transparent cursor-pointer overflow-hidden">
+                            <img src="https://via.placeholder.com/150x150?text=Thumbnail+2" alt="Thumbnail 2" class="w-full h-full object-cover">
+                        </div>
+                        <div class="aspect-square bg-gray-100 rounded border border-transparent cursor-pointer overflow-hidden">
+                            <img src="https://via.placeholder.com/150x150?text=Thumbnail+3" alt="Thumbnail 3" class="w-full h-full object-cover">
+                        </div>
+                        <div class="aspect-square bg-gray-100 rounded border border-transparent cursor-pointer overflow-hidden">
+                            <img src="https://via.placeholder.com/150x150?text=Thumbnail+4" alt="Thumbnail 4" class="w-full h-full object-cover">
+                        </div>
+                        <div class="aspect-square bg-gray-100 rounded border border-transparent cursor-pointer overflow-hidden">
+                            <img src="https://via.placeholder.com/150x150?text=Thumbnail+5" alt="Thumbnail 5" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Information -->
+                <div class="product-info p-6 md:p-8 border-t md:border-t-0 md:border-l border-gray-100">
+                    <!-- Product Title -->
+                    <h1 id="product-name" class="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Đang tải thông tin sản phẩm...</h1>
+                    
+                    <!-- Ratings -->
+                    <div class="flex items-center mb-4">
+                        <div id="product-rating" class="flex text-accent-500">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <span id="review-count" class="text-sm text-gray-500 ml-2">(0 đánh giá)</span>
+                        <span class="mx-2 text-gray-300">|</span>
+                        <span id="product-sku" class="text-sm text-gray-500">SKU: #000000</span>
+                    </div>
+                    
+                    <!-- Price -->
+                    <div class="mb-6">
+                        <div class="flex items-center">
+                            <span id="product-price" class="text-2xl font-bold text-primary-600">0₫</span>
+                            <span id="product-original-price" class="text-lg text-gray-500 line-through ml-2 hidden">0₫</span>
+                        </div>
+                        <p id="stock-status" class="text-sm text-green-600 mt-1">
+                            <i class="fas fa-check-circle mr-1"></i> Còn hàng
+                        </p>
+                    </div>
+                    
+                    <!-- Short Description -->
+                    <div class="mb-6">
+                        <p id="product-short-desc" class="text-gray-600">
+                            Đang tải mô tả sản phẩm...
+                        </p>
+                    </div>
+                    
+                    <!-- Divider -->
+                    <div class="border-t border-gray-200 my-6"></div>
+                    
+                    <!-- Add to Cart Form -->
+                    <div class="add-to-cart">
+                        <h3 class="text-lg font-semibold mb-4">Đặt hàng</h3>
+                        
+                        <!-- Color Selector (if available) -->
+                        <div id="color-selector" class="hidden mb-4">
+                            <p class="text-sm text-gray-700 mb-2">Màu sắc:</p>
+                            <div class="flex flex-wrap gap-2">
+                                <!-- Color options will be added here dynamically -->
+                            </div>
+                        </div>
+                        
+                        <!-- Material Selector (if available) -->
+                        <div id="material-selector" class="hidden mb-4">
+                            <p class="text-sm text-gray-700 mb-2">Chất liệu:</p>
+                            <div class="flex flex-wrap gap-2">
+                                <!-- Material options will be added here dynamically -->
+                            </div>
+                        </div>
+                        
+                        <!-- Quantity Selector -->
+                        <div class="mb-4">
+                            <p class="text-sm text-gray-700 mb-2">Số lượng:</p>
+                            <div class="flex items-center">
+                                <button id="decrease-quantity" class="bg-gray-100 hover:bg-gray-200 border border-gray-200 rounded-l h-10 w-10 flex items-center justify-center transition-colors">
+                                    <i class="fas fa-minus text-gray-600"></i>
+                                </button>
+                                <input type="number" id="quantity" min="1" value="1" class="h-10 border-t border-b border-gray-200 w-16 text-center focus:outline-none focus:ring-2 focus:ring-primary-500">
+                                <button id="increase-quantity" class="bg-gray-100 hover:bg-gray-200 border border-gray-200 rounded-r h-10 w-10 flex items-center justify-center transition-colors">
+                                    <i class="fas fa-plus text-gray-600"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <button id="add-to-cart" class="add-to-cart-btn flex-grow bg-primary-600 hover:bg-primary-700 text-white py-3 px-6 rounded-lg font-medium transition-colors flex items-center justify-center">
+                                <i class="fas fa-shopping-cart mr-2"></i>
+                                Thêm vào giỏ hàng
+                            </button>
+                            <button id="buy-now" class="flex-grow bg-accent-500 hover:bg-accent-600 text-white py-3 px-6 rounded-lg font-medium transition-colors flex items-center justify-center">
+                                <i class="fas fa-bolt mr-2"></i>
+                                Mua ngay
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Additional Information -->
+                    <div class="border-t border-gray-200 mt-6 pt-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-truck text-primary-500 text-xl mr-2"></i>
+                                <span class="text-sm text-gray-700">Miễn phí giao hàng cho đơn từ 5 triệu</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-shield-alt text-primary-500 text-xl mr-2"></i>
+                                <span class="text-sm text-gray-700">Bảo hành 12 tháng</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-exchange-alt text-primary-500 text-xl mr-2"></i>
+                                <span class="text-sm text-gray-700">Đổi trả trong 7 ngày</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-check-circle text-primary-500 text-xl mr-2"></i>
+                                <span class="text-sm text-gray-700">Sản phẩm chính hãng 100%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Details Tabs -->
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-8">
+            <div class="border-b border-gray-200">
+                <div class="flex flex-wrap">
+                    <button id="tab-description" class="tab-btn active px-6 py-3 font-medium text-gray-900 border-b-2 border-primary-600 focus:outline-none">
+                        Mô tả sản phẩm
+                    </button>
+                    <button id="tab-specifications" class="tab-btn px-6 py-3 font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent hover:border-gray-300 focus:outline-none">
+                        Thông số kỹ thuật
+                    </button>
+                    <button id="tab-reviews" class="tab-btn px-6 py-3 font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent hover:border-gray-300 focus:outline-none">
+                        Đánh giá
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Tab Content -->
+            <div class="p-6">
+                <!-- Description Tab Content -->
+                <div id="content-description" class="tab-content">
+                    <div id="product-description" class="prose max-w-none">
+                        <p class="animate-pulse bg-gray-100 h-4 w-3/4 mb-3 rounded"></p>
+                        <p class="animate-pulse bg-gray-100 h-4 w-full mb-3 rounded"></p>
+                        <p class="animate-pulse bg-gray-100 h-4 w-5/6 mb-3 rounded"></p>
+                        <p class="animate-pulse bg-gray-100 h-4 w-2/3 mb-3 rounded"></p>
+                    </div>
+                </div>
+                
+                <!-- Specifications Tab Content -->
+                <div id="content-specifications" class="tab-content hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="text-lg font-semibold mb-3">Kích thước & Trọng lượng</h3>
+                            <table class="w-full">
+                                <tbody>
+                                    <tr class="border-b border-gray-200">
+                                        <td class="py-2 text-gray-600">Kích thước tổng thể</td>
+                                        <td id="spec-dimensions" class="py-2 font-medium text-right">--</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200">
+                                        <td class="py-2 text-gray-600">Trọng lượng</td>
+                                        <td id="spec-weight" class="py-2 font-medium text-right">--</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200">
+                                        <td class="py-2 text-gray-600">Kích thước đóng gói</td>
+                                        <td id="spec-package-dimensions" class="py-2 font-medium text-right">--</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-lg font-semibold mb-3">Chất liệu & Xuất xứ</h3>
+                            <table class="w-full">
+                                <tbody>
+                                    <tr class="border-b border-gray-200">
+                                        <td class="py-2 text-gray-600">Chất liệu chính</td>
+                                        <td id="spec-material" class="py-2 font-medium text-right">--</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200">
+                                        <td class="py-2 text-gray-600">Mặt/bề mặt</td>
+                                        <td id="spec-surface" class="py-2 font-medium text-right">--</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200">
+                                        <td class="py-2 text-gray-600">Xuất xứ</td>
+                                        <td id="spec-origin" class="py-2 font-medium text-right">--</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200">
+                                        <td class="py-2 text-gray-600">Thương hiệu</td>
+                                        <td id="spec-brand" class="py-2 font-medium text-right">--</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200">
+                                        <td class="py-2 text-gray-600">Bảo hành</td>
+                                        <td id="spec-warranty" class="py-2 font-medium text-right">--</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Reviews Tab Content -->
+                <div id="content-reviews" class="tab-content hidden">
+                    <!-- Reviews Summary -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div class="md:col-span-1">
+                            <div class="flex flex-col items-center justify-center h-full">
+                                <div class="text-4xl font-bold text-primary-600 mb-2" id="average-rating">0.0</div>
+                                <div class="flex text-accent-500 mb-2" id="average-stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="text-sm text-gray-500 mb-4" id="total-reviews">(0 đánh giá)</div>
+                                <button class="bg-primary-600 hover:bg-primary-700 text-white py-2 px-4 rounded-lg text-sm">Viết đánh giá</button>
+                            </div>
+                        </div>
+                        
+                        <div class="md:col-span-2">
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <div class="w-24 text-sm text-gray-600">5 sao</div>
+                                    <div class="flex-grow h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div class="h-full bg-accent-500 rounded-full" style="width: 75%"></div>
+                                    </div>
+                                    <div class="w-12 text-right text-sm text-gray-600">75%</div>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-24 text-sm text-gray-600">4 sao</div>
+                                    <div class="flex-grow h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div class="h-full bg-accent-500 rounded-full" style="width: 15%"></div>
+                                    </div>
+                                    <div class="w-12 text-right text-sm text-gray-600">15%</div>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-24 text-sm text-gray-600">3 sao</div>
+                                    <div class="flex-grow h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div class="h-full bg-accent-500 rounded-full" style="width: 5%"></div>
+                                    </div>
+                                    <div class="w-12 text-right text-sm text-gray-600">5%</div>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-24 text-sm text-gray-600">2 sao</div>
+                                    <div class="flex-grow h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div class="h-full bg-accent-500 rounded-full" style="width: 3%"></div>
+                                    </div>
+                                    <div class="w-12 text-right text-sm text-gray-600">3%</div>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-24 text-sm text-gray-600">1 sao</div>
+                                    <div class="flex-grow h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div class="h-full bg-accent-500 rounded-full" style="width: 2%"></div>
+                                    </div>
+                                    <div class="w-12 text-right text-sm text-gray-600">2%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Reviews List -->
+                    <div id="reviews-list">
+                        <div class="border-t border-gray-200 py-6">
+                            <div class="flex items-start mb-4">
+                                <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="User avatar" class="w-10 h-10 rounded-full mr-4">
+                                <div>
+                                    <div class="flex items-center">
+                                        <h4 class="font-semibold">Nguyễn Thị Hương</h4>
+                                        <span class="mx-2 text-gray-300">•</span>
+                                        <span class="text-sm text-gray-500">12/08/2023</span>
+                                    </div>
+                                    <div class="flex text-accent-500 text-sm my-1">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-gray-700 mb-2">Sản phẩm tuyệt vời, đúng với mô tả và hình ảnh trên web. Chất lượng rất tốt, giao hàng nhanh và đóng gói cẩn thận. Tôi rất hài lòng và sẽ mua lại lần sau.</p>
+                            <div class="flex items-center">
+                                <button class="text-gray-500 hover:text-gray-700 text-sm mr-4">
+                                    <i class="far fa-thumbs-up mr-1"></i> Hữu ích (3)
+                                </button>
+                                <button class="text-gray-500 hover:text-gray-700 text-sm">
+                                    <i class="far fa-comment mr-1"></i> Trả lời
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="border-t border-gray-200 py-6">
+                            <div class="flex items-start mb-4">
+                                <img src="https://randomuser.me/api/portraits/men/54.jpg" alt="User avatar" class="w-10 h-10 rounded-full mr-4">
+                                <div>
+                                    <div class="flex items-center">
+                                        <h4 class="font-semibold">Trần Văn Nam</h4>
+                                        <span class="mx-2 text-gray-300">•</span>
+                                        <span class="text-sm text-gray-500">05/08/2023</span>
+                                    </div>
+                                    <div class="flex text-accent-500 text-sm my-1">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-gray-700 mb-2">Sản phẩm chất lượng tốt, đóng gói cẩn thận. Tôi đánh giá 4 sao vì màu sắc hơi khác một chút so với hình ảnh, nhưng nhìn chung rất ưng ý.</p>
+                            <div class="flex items-center">
+                                <button class="text-gray-500 hover:text-gray-700 text-sm mr-4">
+                                    <i class="far fa-thumbs-up mr-1"></i> Hữu ích (1)
+                                </button>
+                                <button class="text-gray-500 hover:text-gray-700 text-sm">
+                                    <i class="far fa-comment mr-1"></i> Trả lời
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- More reviews will be loaded dynamically -->
+                    </div>
+                    
+                    <!-- Load More Reviews Button -->
+                    <div class="text-center mt-6">
+                        <button class="border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 py-2 px-4 rounded-lg text-sm">
+                            Xem thêm đánh giá
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Products -->
+        <div class="mb-12">
+            <h2 class="text-2xl font-bold mb-6">Sản phẩm tương tự</h2>
+            <div id="related-products" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Related products will be loaded dynamically -->
+                <div class="animate-pulse bg-white rounded-lg shadow-card h-[380px]"></div>
+                <div class="animate-pulse bg-white rounded-lg shadow-card h-[380px]"></div>
+                <div class="animate-pulse bg-white rounded-lg shadow-card h-[380px]"></div>
+                <div class="animate-pulse bg-white rounded-lg shadow-card h-[380px]"></div>
+            </div>
+        </div>
+
+        <!-- Recently Viewed Products -->
+        <div class="mb-12" id="recently-viewed-container">
+            <h2 class="text-2xl font-bold mb-6">Sản phẩm đã xem</h2>
+            <div id="recently-viewed-products" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Recently viewed products will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Additional Script for this page -->
+<script>
+    // Tab functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.classList.remove('border-primary-600');
+                    btn.classList.add('border-transparent');
+                    btn.classList.remove('text-gray-900');
+                    btn.classList.add('text-gray-500');
+                });
+                
+                // Add active class to current button
+                button.classList.add('active');
+                button.classList.add('border-primary-600');
+                button.classList.remove('border-transparent');
+                button.classList.add('text-gray-900');
+                button.classList.remove('text-gray-500');
+                
+                // Hide all tab contents
+                tabContents.forEach(content => {
+                    content.classList.add('hidden');
+                });
+                
+                // Show the corresponding tab content
+                const contentId = 'content-' + button.id.split('-')[1];
+                document.getElementById(contentId).classList.remove('hidden');
+            });
+        });
+    });
+</script>

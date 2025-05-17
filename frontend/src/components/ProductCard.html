@@ -1,0 +1,92 @@
+<!-- Product Card Component -->
+<div class="bg-white rounded-lg shadow-card overflow-hidden transition-transform duration-300 hover:-translate-y-1 group">
+    <!-- Product Image -->
+    <div class="relative overflow-hidden pb-[75%]"> <!-- 4:3 aspect ratio -->
+        <img src="${product.image || 'https://via.placeholder.com/300x300?text=Nội+Thất'}" 
+             alt="${product.name}" 
+             class="absolute top-0 left-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+        
+        <!-- Sale badge (if discount) -->
+        ${product.discount_percentage ? `
+        <div class="absolute top-2 right-2 bg-accent-500 text-white text-xs font-bold px-2 py-1 rounded">
+            -${product.discount_percentage}%
+        </div>
+        ` : ''}
+    </div>
+    
+    <!-- Product Info -->
+    <div class="p-4">
+        <!-- Category -->
+        <div class="text-xs text-gray-500 mb-1">${product.category || 'Nội thất'}</div>
+        
+        <!-- Product Name -->
+        <h3 class="text-gray-800 font-medium text-lg mb-2 group-hover:text-primary-600 transition-colors line-clamp-2 min-h-[3rem]">
+            ${product.name}
+        </h3>
+        
+        <!-- Rating -->
+        <div class="flex items-center mb-2">
+            <div class="flex text-accent-500">
+                ${generateStarRating(product.rating || 5)}
+            </div>
+            <span class="text-xs text-gray-500 ml-1">(${product.review_count || 0})</span>
+        </div>
+        
+        <!-- Price -->
+        <div class="flex items-center">
+            ${product.discount_percentage ? `
+            <span class="text-gray-400 line-through text-sm mr-2">${formatCurrency(product.original_price || 0)}</span>
+            <span class="text-primary-700 font-bold">${formatCurrency(product.price || 0)}</span>
+            ` : `
+            <span class="text-primary-700 font-bold">${formatCurrency(product.price || 0)}</span>
+            `}
+        </div>
+    </div>
+    
+    <!-- Add to Cart Button -->
+    <div class="px-4 pb-4">
+        <button onclick="addToCart(${product.id})" class="w-full bg-primary-50 text-primary-700 hover:bg-primary-700 hover:text-white transition-colors py-2 rounded-lg flex items-center justify-center">
+            <i class="fas fa-shopping-cart mr-2"></i>
+            Thêm vào giỏ
+        </button>
+    </div>
+</div>
+
+<!-- Helper Scripts -->
+<script>
+// Generate star rating HTML
+function generateStarRating(rating) {
+    let stars = '';
+    const fullStars = Math.floor(rating);
+    const halfStar = rating % 1 >= 0.5;
+    
+    // Add full stars
+    for (let i = 0; i < fullStars; i++) {
+        stars += '<i class="fas fa-star"></i>';
+    }
+    
+    // Add half star if needed
+    if (halfStar) {
+        stars += '<i class="fas fa-star-half-alt"></i>';
+    }
+    
+    // Add empty stars
+    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+    for (let i = 0; i < emptyStars; i++) {
+        stars += '<i class="far fa-star"></i>';
+    }
+    
+    return stars;
+}
+
+// Format currency
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+}
+
+// Add to cart function
+function addToCart(productId) {
+    // Will be implemented in main.js
+    console.log(`Adding product ${productId} to cart`);
+}
+</script>

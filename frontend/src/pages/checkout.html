@@ -1,0 +1,296 @@
+<!-- Checkout Page -->
+<div class="checkout-page bg-gray-50 py-8">
+    <div class="container mx-auto px-4">
+        <!-- Breadcrumb -->
+        <div class="mb-6">
+            <div class="flex items-center text-sm text-gray-500">
+                <a href="/" class="hover:text-primary-600">Trang chủ</a>
+                <span class="mx-2">/</span>
+                <a href="/cart.html" class="hover:text-primary-600">Giỏ hàng</a>
+                <span class="mx-2">/</span>
+                <span class="text-gray-700">Thanh toán</span>
+            </div>
+        </div>
+
+        <!-- Page Title -->
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-8">
+            Thanh toán
+        </h1>
+
+        <!-- Back to Cart for Mobile -->
+        <div class="lg:hidden mb-6">
+            <a href="/cart.html" class="text-primary-600 hover:text-primary-700 flex items-center text-sm font-medium">
+                <i class="fas fa-chevron-left mr-2 text-xs"></i>
+                Quay lại giỏ hàng
+            </a>
+        </div>
+        
+        <!-- Empty Cart Warning -->
+        <div id="empty-cart-warning" class="hidden bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <i class="fas fa-exclamation-circle text-yellow-500"></i>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm text-yellow-700">
+                        Giỏ hàng của bạn đang trống. Vui lòng thêm sản phẩm trước khi thanh toán.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Checkout Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Checkout Forms -->
+            <div class="lg:col-span-2">
+                <form id="checkout-form">
+                    <!-- Customer Information -->
+                    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                        <h2 class="text-lg font-medium text-gray-800 mb-4">Thông tin khách hàng</h2>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label for="fullname" class="block text-sm font-medium text-gray-700 mb-1">Họ và tên <span class="text-red-500">*</span></label>
+                                <input type="text" id="fullname" name="fullname" required class="w-full border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500">
+                            </div>
+                            <div>
+                                <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Số điện thoại <span class="text-red-500">*</span></label>
+                                <input type="tel" id="phone" name="phone" required class="w-full border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email <span class="text-red-500">*</span></label>
+                            <input type="email" id="email" name="email" required class="w-full border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500">
+                            <p class="text-xs text-gray-500 mt-1">Chúng tôi sẽ gửi xác nhận đơn hàng qua email này.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Shipping Information -->
+                    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                        <h2 class="text-lg font-medium text-gray-800 mb-4">Thông tin giao hàng</h2>
+                        
+                        <div class="mb-4">
+                            <label for="address" class="block text-sm font-medium text-gray-700 mb-1">Địa chỉ <span class="text-red-500">*</span></label>
+                            <input type="text" id="address" name="address" required class="w-full border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500">
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                            <div>
+                                <label for="province" class="block text-sm font-medium text-gray-700 mb-1">Tỉnh/Thành phố <span class="text-red-500">*</span></label>
+                                <select id="province" name="province" required class="w-full border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500">
+                                    <option value="">Chọn Tỉnh/Thành phố</option>
+                                    <option value="hanoi">Hà Nội</option>
+                                    <option value="hcm">TP. Hồ Chí Minh</option>
+                                    <option value="danang">Đà Nẵng</option>
+                                    <!-- Thêm các tỉnh/thành phố khác -->
+                                </select>
+                            </div>
+                            <div>
+                                <label for="district" class="block text-sm font-medium text-gray-700 mb-1">Quận/Huyện <span class="text-red-500">*</span></label>
+                                <select id="district" name="district" required class="w-full border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500" disabled>
+                                    <option value="">Chọn Quận/Huyện</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="ward" class="block text-sm font-medium text-gray-700 mb-1">Phường/Xã <span class="text-red-500">*</span></label>
+                                <select id="ward" name="ward" required class="w-full border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500" disabled>
+                                    <option value="">Chọn Phường/Xã</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="note" class="block text-sm font-medium text-gray-700 mb-1">Ghi chú cho đơn hàng (tùy chọn)</label>
+                            <textarea id="note" name="note" rows="3" class="w-full border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500"></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Shipping Method -->
+                    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                        <h2 class="text-lg font-medium text-gray-800 mb-4">Phương thức giao hàng</h2>
+                        
+                        <div class="space-y-3">
+                            <label class="flex items-center p-3 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-50">
+                                <input type="radio" name="shipping-method" value="standard" checked class="form-radio h-4 w-4 text-primary-600 focus:ring-primary-500">
+                                <div class="ml-3">
+                                    <div class="text-sm font-medium text-gray-900">Giao hàng tiêu chuẩn</div>
+                                    <div class="text-sm text-gray-500">3-5 ngày làm việc</div>
+                                </div>
+                                <div class="ml-auto font-medium">Miễn phí</div>
+                            </label>
+                            
+                            <label class="flex items-center p-3 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-50">
+                                <input type="radio" name="shipping-method" value="express" class="form-radio h-4 w-4 text-primary-600 focus:ring-primary-500">
+                                <div class="ml-3">
+                                    <div class="text-sm font-medium text-gray-900">Giao hàng nhanh</div>
+                                    <div class="text-sm text-gray-500">1-2 ngày làm việc</div>
+                                </div>
+                                <div class="ml-auto font-medium">50.000₫</div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Payment Method -->
+                    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                        <h2 class="text-lg font-medium text-gray-800 mb-4">Phương thức thanh toán</h2>
+                        
+                        <div class="space-y-3">
+                            <label class="flex items-center p-3 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-50">
+                                <input type="radio" name="payment-method" value="cod" checked class="form-radio h-4 w-4 text-primary-600 focus:ring-primary-500">
+                                <div class="ml-3">
+                                    <div class="text-sm font-medium text-gray-900">Thanh toán khi nhận hàng (COD)</div>
+                                    <div class="text-sm text-gray-500">Thanh toán bằng tiền mặt khi nhận hàng</div>
+                                </div>
+                                <div class="ml-auto">
+                                    <i class="fas fa-money-bill-wave text-gray-400"></i>
+                                </div>
+                            </label>
+                            
+                            <label class="flex items-center p-3 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-50">
+                                <input type="radio" name="payment-method" value="bank-transfer" class="form-radio h-4 w-4 text-primary-600 focus:ring-primary-500">
+                                <div class="ml-3">
+                                    <div class="text-sm font-medium text-gray-900">Chuyển khoản ngân hàng</div>
+                                    <div class="text-sm text-gray-500">Chuyển khoản qua tài khoản ngân hàng</div>
+                                </div>
+                                <div class="ml-auto">
+                                    <i class="fas fa-university text-gray-400"></i>
+                                </div>
+                            </label>
+                            
+                            <label class="flex items-center p-3 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-50">
+                                <input type="radio" name="payment-method" value="momo" class="form-radio h-4 w-4 text-primary-600 focus:ring-primary-500">
+                                <div class="ml-3">
+                                    <div class="text-sm font-medium text-gray-900">Ví điện tử MoMo</div>
+                                    <div class="text-sm text-gray-500">Thanh toán qua ví MoMo</div>
+                                </div>
+                                <div class="ml-auto">
+                                    <img src="https://upload.wikimedia.org/wikipedia/vi/f/fe/MoMo_Logo.png" alt="MoMo" class="h-6">
+                                </div>
+                            </label>
+                            
+                            <label class="flex items-center p-3 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-50">
+                                <input type="radio" name="payment-method" value="credit-card" class="form-radio h-4 w-4 text-primary-600 focus:ring-primary-500">
+                                <div class="ml-3">
+                                    <div class="text-sm font-medium text-gray-900">Thẻ tín dụng/Ghi nợ</div>
+                                    <div class="text-sm text-gray-500">Thanh toán an toàn qua cổng thanh toán</div>
+                                </div>
+                                <div class="ml-auto flex space-x-1">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" class="h-5">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" class="h-5">
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Order Summary -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow-sm p-6 sticky top-4">
+                    <h2 class="text-lg font-medium text-gray-800 mb-4">Tóm tắt đơn hàng</h2>
+                    
+                    <!-- Cart Items Summary -->
+                    <div class="border-b border-gray-200 pb-4 mb-4">
+                        <div id="cart-summary-items">
+                            <!-- Items will be added here via JavaScript -->
+                            <div class="flex items-center py-2 animate-pulse">
+                                <div class="w-12 h-12 bg-gray-200 rounded-md mr-3"></div>
+                                <div class="flex-grow">
+                                    <div class="h-4 bg-gray-200 rounded mb-2 w-3/4"></div>
+                                    <div class="h-3 bg-gray-200 rounded w-1/2"></div>
+                                </div>
+                                <div class="ml-2">
+                                    <div class="h-4 bg-gray-200 rounded w-16"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center py-2 animate-pulse">
+                                <div class="w-12 h-12 bg-gray-200 rounded-md mr-3"></div>
+                                <div class="flex-grow">
+                                    <div class="h-4 bg-gray-200 rounded mb-2 w-3/4"></div>
+                                    <div class="h-3 bg-gray-200 rounded w-1/2"></div>
+                                </div>
+                                <div class="ml-2">
+                                    <div class="h-4 bg-gray-200 rounded w-16"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <a href="/cart.html" class="text-primary-600 hover:text-primary-700 text-sm flex items-center mt-3">
+                            <i class="fas fa-pen-to-square mr-1 text-xs"></i>
+                            Chỉnh sửa giỏ hàng
+                        </a>
+                    </div>
+                    
+                    <!-- Order Totals -->
+                    <div class="divide-y divide-gray-200">
+                        <div class="py-3">
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-600">Tạm tính</span>
+                                <span id="checkout-subtotal" class="text-gray-800 font-medium">0₫</span>
+                            </div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-600">Giảm giá</span>
+                                <span id="checkout-discount" class="text-gray-800 font-medium">0₫</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Phí vận chuyển</span>
+                                <span id="checkout-shipping" class="text-gray-800 font-medium">Miễn phí</span>
+                            </div>
+                        </div>
+                        <div class="py-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-800 font-medium">Tổng cộng</span>
+                                <span id="checkout-total" class="text-xl text-primary-600 font-bold">0₫</span>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">Đã bao gồm VAT (nếu có)</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Terms & Conditions -->
+                    <div class="mt-4 mb-4">
+                        <label class="inline-flex items-center">
+                            <input type="checkbox" id="terms-check" class="form-checkbox h-4 w-4 text-primary-600 focus:ring-primary-500">
+                            <span class="ml-2 text-sm text-gray-600">
+                                Tôi đã đọc và đồng ý với <a href="#" class="text-primary-600 hover:underline">Điều khoản dịch vụ</a> và <a href="#" class="text-primary-600 hover:underline">Chính sách bảo mật</a>.
+                            </span>
+                        </label>
+                    </div>
+                    
+                    <!-- Submit Order Button -->
+                    <button id="place-order" type="submit" form="checkout-form" disabled class="w-full mt-4 bg-primary-600 hover:bg-primary-700 text-white py-3 px-6 rounded-lg font-medium transition-colors flex items-center justify-center opacity-50 cursor-not-allowed">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        Hoàn tất đặt hàng
+                    </button>
+                    
+                    <p class="text-xs text-gray-500 mt-4 text-center">
+                        Bằng cách nhấn nút "Hoàn tất đặt hàng", bạn đồng ý với các điều khoản và điều kiện của chúng tôi.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Additional Script for checkout page -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Checkout page specific code
+        // Implementation happens in main.js
+        
+        // Enable place order button when terms checkbox is checked
+        const termsCheck = document.getElementById('terms-check');
+        const placeOrderBtn = document.getElementById('place-order');
+        
+        if (termsCheck && placeOrderBtn) {
+            termsCheck.addEventListener('change', function() {
+                placeOrderBtn.disabled = !this.checked;
+                if (this.checked) {
+                    placeOrderBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                } else {
+                    placeOrderBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                }
+            });
+        }
+    });
+</script>

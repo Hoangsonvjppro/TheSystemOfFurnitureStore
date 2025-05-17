@@ -1,0 +1,613 @@
+<!-- Inventory Dashboard Page -->
+<div class="inventory-dashboard-page min-h-screen bg-gray-100">
+    <!-- Admin Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <span class="text-xl font-bold text-gray-900">Admin Dashboard</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button type="button" class="p-1 text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <button type="button" class="p-1 text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                    <div class="flex items-center">
+                        <span class="text-sm font-medium text-gray-700 mr-2">Admin</span>
+                        <img class="h-8 w-8 rounded-full object-cover" src="https://via.placeholder.com/32" alt="Admin Avatar">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Admin Navigation -->
+        <div class="flex flex-wrap items-center justify-between mb-8">
+            <h1 class="text-2xl font-bold text-gray-900">Quản lý kho hàng</h1>
+            
+            <div class="flex items-center space-x-4 mt-4 sm:mt-0">
+                <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                    <i class="fas fa-plus mr-2"></i>
+                    Nhập kho
+                </button>
+                <button type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                    <i class="fas fa-download mr-2"></i>
+                    Xuất báo cáo
+                </button>
+            </div>
+        </div>
+
+        <!-- Dashboard Navigation -->
+        <div class="mb-8">
+            <div class="border-b border-gray-200">
+                <nav class="-mb-px flex space-x-8">
+                    <a href="/admin" class="py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                        Tổng quan
+                    </a>
+                    <a href="/admin/sales" class="py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                        Doanh số
+                    </a>
+                    <a href="/admin/orders" class="py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                        Đơn hàng
+                    </a>
+                    <a href="/admin/products" class="py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                        Sản phẩm
+                    </a>
+                    <a href="/admin/inventory" class="py-4 px-1 border-b-2 border-primary-500 font-medium text-sm text-primary-600">
+                        Kho hàng
+                    </a>
+                    <a href="/admin/customers" class="py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                        Khách hàng
+                    </a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Total Products -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-gray-500 text-sm font-medium">Tổng sản phẩm</h3>
+                </div>
+                <div class="flex items-baseline">
+                    <p class="text-2xl font-bold text-gray-900">428</p>
+                </div>
+                <div class="mt-2 flex items-center text-sm text-gray-500">
+                    <i class="fas fa-box text-primary-600 mr-1"></i>
+                    <span>15 sản phẩm mới trong tháng</span>
+                </div>
+            </div>
+
+            <!-- Low Stock -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-gray-500 text-sm font-medium">Sắp hết hàng</h3>
+                    <span class="text-red-600 bg-red-100 rounded-full text-xs px-2 py-1 font-medium">12 sản phẩm</span>
+                </div>
+                <div class="flex items-baseline">
+                    <p class="text-2xl font-bold text-gray-900">32</p>
+                </div>
+                <div class="mt-2 flex items-center text-sm text-gray-500">
+                    <i class="fas fa-exclamation-triangle text-red-500 mr-1"></i>
+                    <span>Cần bổ sung hàng sớm</span>
+                </div>
+            </div>
+
+            <!-- Total Value -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-gray-500 text-sm font-medium">Giá trị kho hàng</h3>
+                </div>
+                <div class="flex items-baseline">
+                    <p class="text-2xl font-bold text-gray-900">2.85 tỷ ₫</p>
+                </div>
+                <div class="mt-2 flex items-center text-sm text-gray-500">
+                    <i class="fas fa-chart-line text-green-500 mr-1"></i>
+                    <span>Tăng 8.5% so với tháng trước</span>
+                </div>
+            </div>
+
+            <!-- Pending Orders -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-gray-500 text-sm font-medium">Đơn hàng chờ xuất</h3>
+                </div>
+                <div class="flex items-baseline">
+                    <p class="text-2xl font-bold text-gray-900">18</p>
+                </div>
+                <div class="mt-2 flex items-center text-sm text-gray-500">
+                    <i class="fas fa-clock text-yellow-500 mr-1"></i>
+                    <span>5 đơn cần xuất hôm nay</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inventory Stock Alerts -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-lg font-medium text-gray-900">Cảnh báo tồn kho</h2>
+                <button class="text-sm text-primary-600 hover:text-primary-700 font-medium">Xem tất cả</button>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mã sản phẩm</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sản phẩm</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Danh mục</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tồn kho</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trạng thái</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <!-- Item 1 -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#PRD-8502</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="h-10 w-10 flex-shrink-0 bg-gray-200 rounded-md overflow-hidden">
+                                        <img src="https://via.placeholder.com/40" alt="Product" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">Sofa góc chữ L Melbourne</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Sofa & Ghế</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">2</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                    Cần nhập ngay
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <button class="text-primary-600 hover:text-primary-900 mr-3">Nhập kho</button>
+                                <button class="text-gray-600 hover:text-gray-900">Xem</button>
+                            </td>
+                        </tr>
+                        
+                        <!-- Item 2 -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#PRD-5623</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="h-10 w-10 flex-shrink-0 bg-gray-200 rounded-md overflow-hidden">
+                                        <img src="https://via.placeholder.com/40" alt="Product" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">Bàn ăn gỗ sồi 6 người</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Bàn ăn & Ghế</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">4</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    Sắp hết hàng
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <button class="text-primary-600 hover:text-primary-900 mr-3">Nhập kho</button>
+                                <button class="text-gray-600 hover:text-gray-900">Xem</button>
+                            </td>
+                        </tr>
+                        
+                        <!-- Item 3 -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#PRD-2341</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="h-10 w-10 flex-shrink-0 bg-gray-200 rounded-md overflow-hidden">
+                                        <img src="https://via.placeholder.com/40" alt="Product" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">Đèn chùm pha lê hiện đại</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Đèn trang trí</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">3</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    Sắp hết hàng
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <button class="text-primary-600 hover:text-primary-900 mr-3">Nhập kho</button>
+                                <button class="text-gray-600 hover:text-gray-900">Xem</button>
+                            </td>
+                        </tr>
+                        
+                        <!-- Item 4 -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#PRD-9965</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="h-10 w-10 flex-shrink-0 bg-gray-200 rounded-md overflow-hidden">
+                                        <img src="https://via.placeholder.com/40" alt="Product" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">Giường ngủ bọc vải cao cấp</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Phòng ngủ</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">1</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                    Cần nhập ngay
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <button class="text-primary-600 hover:text-primary-900 mr-3">Nhập kho</button>
+                                <button class="text-gray-600 hover:text-gray-900">Xem</button>
+                            </td>
+                        </tr>
+                        
+                        <!-- Item 5 -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#PRD-1078</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="h-10 w-10 flex-shrink-0 bg-gray-200 rounded-md overflow-hidden">
+                                        <img src="https://via.placeholder.com/40" alt="Product" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">Kệ tivi gỗ tự nhiên</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Tủ & Kệ</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">5</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    Sắp hết hàng
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <button class="text-primary-600 hover:text-primary-900 mr-3">Nhập kho</button>
+                                <button class="text-gray-600 hover:text-gray-900">Xem</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Search & Filter + Inventory Management -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+            <!-- Search & Filter -->
+            <div class="lg:col-span-2 bg-white rounded-lg shadow-sm p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-lg font-medium text-gray-900">Tìm kiếm kho hàng</h2>
+                </div>
+                
+                <!-- Search Form -->
+                <div class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <!-- Search -->
+                        <div class="col-span-3 md:col-span-1">
+                            <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Tìm kiếm sản phẩm</label>
+                            <div class="relative rounded-md shadow-sm">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-search text-gray-400"></i>
+                                </div>
+                                <input type="text" id="search" class="focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md" placeholder="Tên hoặc mã sản phẩm...">
+                            </div>
+                        </div>
+                        
+                        <!-- Category -->
+                        <div>
+                            <label for="category" class="block text-sm font-medium text-gray-700 mb-1">Danh mục</label>
+                            <select id="category" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md">
+                                <option value="">Tất cả danh mục</option>
+                                <option>Sofa & Ghế</option>
+                                <option>Bàn ăn & Ghế</option>
+                                <option>Phòng ngủ</option>
+                                <option>Tủ & Kệ</option>
+                                <option>Đèn & Trang trí</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Stock Status -->
+                        <div>
+                            <label for="stock-status" class="block text-sm font-medium text-gray-700 mb-1">Trạng thái</label>
+                            <select id="stock-status" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md">
+                                <option value="">Tất cả trạng thái</option>
+                                <option>Còn hàng</option>
+                                <option>Sắp hết hàng</option>
+                                <option>Hết hàng</option>
+                                <option>Ngừng kinh doanh</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end">
+                        <button type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 mr-3">
+                            Đặt lại
+                        </button>
+                        <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                            <i class="fas fa-search mr-2"></i> Tìm kiếm
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Stock Level Chart -->
+                <div class="mt-8">
+                    <h3 class="text-base font-medium text-gray-900 mb-4">Biểu đồ tồn kho theo danh mục</h3>
+                    <!-- Placeholder for Chart -->
+                    <div class="w-full h-64 bg-white rounded-md relative">
+                        <canvas id="stockLevelChart"></canvas>
+                    </div>
+                    <!-- Chart Legend -->
+                    <div class="mt-4 grid grid-cols-2 gap-4">
+                        <div class="flex items-center">
+                            <span class="w-3 h-3 bg-indigo-500 rounded-full mr-2"></span>
+                            <span class="text-sm text-gray-600">Sofa & Ghế (42 sản phẩm)</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="w-3 h-3 bg-yellow-500 rounded-full mr-2"></span>
+                            <span class="text-sm text-gray-600">Bàn ăn & Ghế (36 sản phẩm)</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="w-3 h-3 bg-red-500 rounded-full mr-2"></span>
+                            <span class="text-sm text-gray-600">Phòng ngủ (28 sản phẩm)</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span>
+                            <span class="text-sm text-gray-600">Tủ & Kệ (18 sản phẩm)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Inventory Activities -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-lg font-medium text-gray-900">Hoạt động gần đây</h2>
+                    <button class="text-sm text-primary-600 hover:text-primary-700 font-medium">Xem tất cả</button>
+                </div>
+                
+                <div class="flow-root">
+                    <ul class="-mb-8">
+                        <!-- Activity Item 1 -->
+                        <li>
+                            <div class="relative pb-8">
+                                <span class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span>
+                                <div class="relative flex space-x-3">
+                                    <div>
+                                        <span class="h-8 w-8 rounded-full bg-green-500 flex items-center justify-center ring-8 ring-white">
+                                            <i class="fas fa-plus text-white"></i>
+                                        </span>
+                                    </div>
+                                    <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+                                        <div>
+                                            <p class="text-sm text-gray-500">Nhập kho <span class="font-medium text-gray-900">15 Ghế sofa đơn Scandinavian</span></p>
+                                        </div>
+                                        <div class="text-right text-sm whitespace-nowrap text-gray-500">
+                                            <time datetime="2023-07-01">1 giờ trước</time>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <!-- Activity Item 2 -->
+                        <li>
+                            <div class="relative pb-8">
+                                <span class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span>
+                                <div class="relative flex space-x-3">
+                                    <div>
+                                        <span class="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center ring-8 ring-white">
+                                            <i class="fas fa-sync-alt text-white"></i>
+                                        </span>
+                                    </div>
+                                    <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+                                        <div>
+                                            <p class="text-sm text-gray-500">Cập nhật tồn kho <span class="font-medium text-gray-900">Bàn ăn gỗ sồi 6 người</span></p>
+                                        </div>
+                                        <div class="text-right text-sm whitespace-nowrap text-gray-500">
+                                            <time datetime="2023-07-01">3 giờ trước</time>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <!-- Activity Item 3 -->
+                        <li>
+                            <div class="relative pb-8">
+                                <span class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span>
+                                <div class="relative flex space-x-3">
+                                    <div>
+                                        <span class="h-8 w-8 rounded-full bg-red-500 flex items-center justify-center ring-8 ring-white">
+                                            <i class="fas fa-minus text-white"></i>
+                                        </span>
+                                    </div>
+                                    <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+                                        <div>
+                                            <p class="text-sm text-gray-500">Xuất kho <span class="font-medium text-gray-900">2 Đèn chùm pha lê hiện đại</span></p>
+                                        </div>
+                                        <div class="text-right text-sm whitespace-nowrap text-gray-500">
+                                            <time datetime="2023-07-01">5 giờ trước</time>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <!-- Activity Item 4 -->
+                        <li>
+                            <div class="relative pb-8">
+                                <span class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span>
+                                <div class="relative flex space-x-3">
+                                    <div>
+                                        <span class="h-8 w-8 rounded-full bg-yellow-500 flex items-center justify-center ring-8 ring-white">
+                                            <i class="fas fa-exclamation text-white"></i>
+                                        </span>
+                                    </div>
+                                    <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+                                        <div>
+                                            <p class="text-sm text-gray-500">Cảnh báo tồn kho thấp <span class="font-medium text-gray-900">Giường ngủ bọc vải cao cấp</span></p>
+                                        </div>
+                                        <div class="text-right text-sm whitespace-nowrap text-gray-500">
+                                            <time datetime="2023-07-01">8 giờ trước</time>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <!-- Activity Item 5 -->
+                        <li>
+                            <div class="relative">
+                                <div class="relative flex space-x-3">
+                                    <div>
+                                        <span class="h-8 w-8 rounded-full bg-green-500 flex items-center justify-center ring-8 ring-white">
+                                            <i class="fas fa-plus text-white"></i>
+                                        </span>
+                                    </div>
+                                    <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+                                        <div>
+                                            <p class="text-sm text-gray-500">Nhập kho <span class="font-medium text-gray-900">10 Kệ tivi gỗ tự nhiên</span></p>
+                                        </div>
+                                        <div class="text-right text-sm whitespace-nowrap text-gray-500">
+                                            <time datetime="2023-07-01">1 ngày trước</time>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Inventory Dashboard JavaScript -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // This is a placeholder for Chart.js initialization
+        // In a real implementation, you would include Chart.js library and initialize it here
+        
+        // Stock Level Chart
+        function initStockLevelChart() {
+            if (typeof Chart !== 'undefined') {
+                const ctx = document.getElementById('stockLevelChart').getContext('2d');
+                
+                // Sample data
+                const categories = ['Sofa & Ghế', 'Bàn ăn & Ghế', 'Phòng ngủ', 'Tủ & Kệ', 'Đèn & Trang trí'];
+                const inStock = [42, 36, 28, 18, 12];
+                const lowStock = [8, 5, 4, 3, 2];
+                const outOfStock = [2, 1, 3, 0, 1];
+                
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: categories,
+                        datasets: [
+                            {
+                                label: 'Còn hàng',
+                                data: inStock,
+                                backgroundColor: '#4f46e5',
+                                barPercentage: 0.6,
+                                categoryPercentage: 0.7
+                            },
+                            {
+                                label: 'Sắp hết hàng',
+                                data: lowStock,
+                                backgroundColor: '#f59e0b',
+                                barPercentage: 0.6,
+                                categoryPercentage: 0.7
+                            },
+                            {
+                                label: 'Hết hàng',
+                                data: outOfStock,
+                                backgroundColor: '#ef4444',
+                                barPercentage: 0.6,
+                                categoryPercentage: 0.7
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top'
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    display: false
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    borderDash: [2, 4]
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                console.log('Chart.js is not loaded. This is a placeholder for the stock level chart.');
+            }
+        }
+        
+        // Initialize charts if Chart.js is available
+        if (typeof Chart !== 'undefined') {
+            initStockLevelChart();
+        } else {
+            // Add placeholder content for the charts
+            document.querySelectorAll('canvas').forEach(canvas => {
+                const parent = canvas.parentNode;
+                const placeholder = document.createElement('div');
+                placeholder.className = 'w-full h-full flex items-center justify-center bg-gray-100 rounded-md';
+                placeholder.innerHTML = '<p class="text-gray-500 text-center p-4">Biểu đồ sẽ hiển thị ở đây khi kết nối với dữ liệu thực tế</p>';
+                parent.replaceChild(placeholder, canvas);
+            });
+        }
+        
+        // Search functionality
+        const searchForm = document.querySelector('button.bg-primary-600');
+        if (searchForm) {
+            searchForm.addEventListener('click', function(e) {
+                e.preventDefault();
+                const searchQuery = document.getElementById('search').value;
+                const category = document.getElementById('category').value;
+                const stockStatus = document.getElementById('stock-status').value;
+                
+                console.log('Search query:', {
+                    query: searchQuery,
+                    category: category,
+                    status: stockStatus
+                });
+                
+                // In a real implementation, this would call an API to search inventory
+                // searchInventory(searchQuery, category, stockStatus);
+            });
+        }
+        
+        // Reset search form
+        const resetButton = document.querySelector('button.border-gray-300');
+        if (resetButton) {
+            resetButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('search').value = '';
+                document.getElementById('category').selectedIndex = 0;
+                document.getElementById('stock-status').selectedIndex = 0;
+            });
+        }
+    });
+</script>
